@@ -67,4 +67,4 @@ This project is a dashboard application built with React that allows users to ma
 2. Link to GitHub repository
 3. If you attempt bonus points, list down the attempted bonus points
 
-For any clarification, please write an email to [your-email@example.com].
+For any clarification, please write an email to [sonendraelon@gmail.com].
