@@ -5,17 +5,23 @@ import UserDetails from "./components/UserDetails";
 import TodoList from "./components/TodoList";
 
 function App() {
+  // State to store the list of users
   const [users, setUsers] = useState([]);
+  // State to store the selected user
   const [selectedUser, setSelectedUser] = useState(null);
+  // State to store the current tab value
   const [tabValue, setTabValue] = useState(0);
+  // Media query to check if the screen width is less than 600px
   const isMobile = useMediaQuery("(max-width:600px)");
 
+  // Fetch the list of users when the component mounts
   useEffect(() => {
     fetch("https://dummyjson.com/users")
       .then((res) => res.json())
       .then((data) => setUsers(data.users));
   }, []);
 
+  // Handle user selection
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     if (isMobile) {
@@ -23,6 +29,7 @@ function App() {
     }
   };
 
+  // Handle tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };

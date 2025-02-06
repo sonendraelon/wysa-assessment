@@ -78,6 +78,7 @@ const TodoList = ({ userId }) => {
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper", borderRadius: 1 }}>
       <Box sx={{ p: 3 }}>
+        {/* Input for new to-do */}
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <TextField
             fullWidth
@@ -96,6 +97,7 @@ const TodoList = ({ userId }) => {
           </Typography>
         </Box>
 
+        {/* Buttons for adding and clearing to-dos */}
         <Box
           sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mb: 3 }}
         >
@@ -115,6 +117,7 @@ const TodoList = ({ userId }) => {
           </Button>
         </Box>
 
+        {/* List of to-dos */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {todos.map((todo) => (
             <Paper
