@@ -9,16 +9,24 @@ import {
   IconButton,
   Box,
   Typography,
+  Pagination,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const UserList = ({ users, onUserSelect }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const usersPerPage = 10;
 
   const filteredUsers = users.filter((user) =>
     `${user.firstName} ${user.lastName}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
+  );
+
+  const paginatedUsers = filteredUsers.slice(
+    (page - 1) * usersPerPage,
+    page * usersPerPage
   );
 
   return (
@@ -61,7 +69,7 @@ const UserList = ({ users, onUserSelect }) => {
       </Box>
       <Box sx={{ overflowY: "auto", flex: 1 }}>
         <List sx={{ width: "100%", bgcolor: "transparent" }}>
-          {filteredUsers.map((user) => (
+          {paginatedUsers.map((user) => (
             <ListItem key={user.id} disablePadding>
               <ListItemButton onClick={() => onUserSelect(user)}>
                 <ListItemText primary={`${user.firstName} ${user.lastName}`} />
@@ -69,6 +77,13 @@ const UserList = ({ users, onUserSelect }) => {
             </ListItem>
           ))}
         </List>
+      </Box>
+      <Box sx={{ p: 2 }}>
+        <Pagination
+          count={Math.ceil(filteredUsers.length / usersPerPage)}
+          page={page}
+          onChange={(e, value) => setPage(value)}
+        />
       </Box>
     </Paper>
   );

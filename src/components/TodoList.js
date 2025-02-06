@@ -7,6 +7,8 @@ import {
   Checkbox,
   Paper,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -14,6 +16,11 @@ import EditIcon from "@mui/icons-material/Edit";
 const TodoList = ({ userId }) => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
+  const [toast, setToast] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   useEffect(() => {
     if (userId) {
@@ -33,16 +40,31 @@ const TodoList = ({ userId }) => {
     };
     setTodos([todo, ...todos]);
     setNewTodo("");
+    setToast({
+      open: true,
+      message: "To-do added successfully!",
+      severity: "success",
+    });
   };
 
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+    setToast({
+      open: true,
+      message: "To-do deleted successfully!",
+      severity: "success",
+    });
   };
 
   const handleEditTodo = (id, newText) => {
     setTodos(
       todos.map((todo) => (todo.id === id ? { ...todo, todo: newText } : todo))
     );
+    setToast({
+      open: true,
+      message: "To-do edited successfully!",
+      severity: "success",
+    });
   };
 
   const handleToggle = (id) => {
@@ -144,6 +166,19 @@ const TodoList = ({ userId }) => {
           ))}
         </Box>
       </Box>
+      <Snackbar
+        open={toast.open}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Set position to top center
+        autoHideDuration={3000}
+        onClose={() => setToast({ ...toast, open: false })}
+      >
+        <Alert
+          onClose={() => setToast({ ...toast, open: false })}
+          severity={toast.severity}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

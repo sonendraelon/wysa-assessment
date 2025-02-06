@@ -6,6 +6,8 @@ import {
   TextField,
   Stack,
   IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -35,6 +37,8 @@ function UserDetails({ user, onUpdateUser }) {
       department: user?.company?.department || "",
     },
   });
+
+  const [toast, setToast] = useState({ open: false, message: "", severity: "success" });
 
   // Update formData when user prop changes
   useEffect(() => {
@@ -94,6 +98,7 @@ function UserDetails({ user, onUpdateUser }) {
     }
 
     onUpdateUser?.(updatedUser);
+    setToast({ open: true, message: "User details saved successfully!", severity: "success" });
   };
 
   const handleCancel = (section) => {
@@ -130,6 +135,7 @@ function UserDetails({ user, onUpdateUser }) {
       default:
         break;
     }
+    setToast({ open: true, message: "Changes canceled.", severity: "info" });
   };
 
   const EditButtons = ({ section, isEditing }) => (
@@ -373,6 +379,16 @@ function UserDetails({ user, onUpdateUser }) {
           </Stack>
         )}
       </Paper>
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={3000}
+        onClose={() => setToast({ ...toast, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+      >
+        <Alert onClose={() => setToast({ ...toast, open: false })} severity={toast.severity}>
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Paper, Tab, Tabs, Box } from "@mui/material";
+import { Container, Paper, Tab, Tabs, Box, useMediaQuery } from "@mui/material";
 import UserList from "./components/UserList";
 import UserDetails from "./components/UserDetails";
 import TodoList from "./components/TodoList";
@@ -8,6 +8,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [tabValue, setTabValue] = useState(0);
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     fetch("https://dummyjson.com/users")
@@ -17,6 +18,9 @@ function App() {
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
+    if (isMobile) {
+      setTabValue(0); // Switch to User Details tab on mobile when a user is selected
+    }
   };
 
   const handleTabChange = (event, newValue) => {
@@ -24,7 +28,7 @@ function App() {
   };
 
   return (
-    <Container>
+    <Container maxWidth="lg">
       <Box
         sx={{
           display: "flex",
@@ -36,15 +40,23 @@ function App() {
         }}
       >
         <Box
-          sx={{ width: { xs: "100%", md: "30%" }, marginRight: { md: "20px" } }}
+          sx={{
+            width: { xs: "100%", md: "30%" },
+            marginRight: { md: "20px" },
+            marginBottom: { xs: "20px", md: "0" },
+          }}
         >
-          <Paper>
+          <Paper elevation={3}>
             <UserList users={users} onUserSelect={handleUserSelect} />
           </Paper>
         </Box>
         <Box sx={{ width: { xs: "100%", md: "70%" } }}>
-          <Paper>
-            <Tabs value={tabValue} onChange={handleTabChange}>
+          <Paper elevation={3}>
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              variant={isMobile ? "fullWidth" : "standard"}
+            >
               <Tab label="User Details" />
               <Tab label="To-Dos" />
             </Tabs>
